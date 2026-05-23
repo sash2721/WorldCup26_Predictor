@@ -468,20 +468,63 @@ function renderChampion() {
 }
 
 function copyResults() {
-  const lines = ['🏆 My FIFA World Cup 2026 Predictions 🏆', ''];
+  const champ = ko['final_0'];
+  const sf0 = ko['sf_0'];
+  const sf1 = ko['sf_1'];
+  const runner = champ ? (sf0?.n !== champ.n ? sf0 : sf1) : null;
+
+  const lines = [];
+
+  // Header
+  lines.push('⚽🏆 FIFA WORLD CUP 2026 - MY PREDICTIONS 🏆⚽');
+  lines.push('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+  lines.push('');
+
+  // Champion highlight
+  lines.push(`🥇 CHAMPION: ${champ?.f || ''} ${champ?.n || 'TBD'} 🏆`);
+  if (runner) lines.push(`🥈 Runner-up: ${runner.f} ${runner.n}`);
+  lines.push('');
+  lines.push('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+
+  // Final & Semis
+  lines.push('');
+  lines.push('🏟️ THE FINAL');
+  lines.push(`   ${sf0?.f || ''} ${sf0?.n || 'TBD'} vs ${sf1?.f || ''} ${sf1?.n || 'TBD'}`);
+  lines.push(`   Winner: ${champ?.f || ''} ${champ?.n || 'TBD'} 🏆`);
+  lines.push('');
+
+  lines.push('🔥 SEMI-FINALS');
+  const qf0 = ko['qf_0'], qf1 = ko['qf_1'], qf2 = ko['qf_2'], qf3 = ko['qf_3'];
+  if (qf0 && qf1) lines.push(`   ${qf0.f} ${qf0.n} vs ${qf1.f} ${qf1.n} → ${sf0?.f || ''} ${sf0?.n || '?'}`);
+  if (qf2 && qf3) lines.push(`   ${qf2.f} ${qf2.n} vs ${qf3.f} ${qf3.n} → ${sf1?.f || ''} ${sf1?.n || '?'}`);
+  lines.push('');
+
+  lines.push('⚡ QUARTER-FINALS');
+  for (let i = 0; i < 4; i++) {
+    const w = ko['qf_' + i];
+    if (w) lines.push(`   ${w.f} ${w.n} ✓`);
+  }
+  lines.push('');
+
+  // Groups - compact
+  lines.push('📋 GROUP STAGE');
   GROUP_KEYS.forEach(g => {
-    lines.push(`Group ${g}: ${rankings[g].map(t => t.n).join(' > ')}`);
+    const r = rankings[g];
+    lines.push(`   ${g}: ${r[0].f}${r[0].n} > ${r[1].f}${r[1].n} > ${r[2].f}${r[2].n} > ${r[3].f}${r[3].n}`);
   });
   lines.push('');
-  lines.push('3rd-place advancing: ' + [...third8].join(', '));
+
+  // 3rd place
+  lines.push('🎫 3RD-PLACE QUALIFIERS');
+  const thirdTeams = get3rdTeams().filter(t => third8.has(t.n));
+  lines.push('   ' + thirdTeams.map(t => `${t.f}${t.n}`).join(', '));
   lines.push('');
-  const names = { r32:'R32', r16:'R16', qf:'QF', sf:'SF', final:'Final' };
-  Object.entries(ko).forEach(([k, team]) => {
-    const [r, i] = k.split('_');
-    lines.push(`${names[r] || r} Match ${parseInt(i)+1}: ${team.n} ✓`);
-  });
-  lines.push('');
-  lines.push(`🏆 Champion: ${ko['final_0']?.n || 'TBD'}`);
+
+  // Footer
+  lines.push('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+  lines.push('Make yours → fifawc26-predictor.vercel.app');
+  lines.push('#WorldCup2026 #FIFAWorldCup');
+
   navigator.clipboard.writeText(lines.join('\n'))
     .then(() => toast('Predictions copied to clipboard! 📋'))
     .catch(() => toast('Copy failed - try again'));
