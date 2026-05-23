@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FIFA World Cup 2026 | Predictor</title>
+  <meta name="description" content="Predict your FIFA World Cup 2026 winner. Pick group rankings, select 3rd-place qualifiers, and call every knockout match.">
+  <link rel="icon" href="https://img.icons8.com/emoji/48/soccer-ball-emoji.png" type="image/png">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- Animated background decorations -->
+<div class="bg-decor" aria-hidden="true">
+  <div class="bg-orb orb-1"></div>
+  <div class="bg-orb orb-2"></div>
+  <div class="bg-orb orb-3"></div>
+  <div class="bg-orb orb-4"></div>
+  <div class="bg-orb orb-5"></div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     HEADER
+══════════════════════════════════════════════ -->
+<header class="header">
+  <div class="header-inner">
+
+    <div class="logo-text-wrap">
+      <div class="logo-text">FIFA World Cup<em>26</em></div>
+      <div class="logo-sub">Predictor</div>
+    </div>
+
+    <nav class="steps-nav" aria-label="Predictor steps">
+      <button class="step-btn active" data-step="0" onclick="goTo(0)">
+        <span class="step-num">1</span>
+        <span class="step-label">Group Stage</span>
+      </button>
+      <button class="step-btn" data-step="1" onclick="goTo(1)">
+        <span class="step-num">2</span>
+        <span class="step-label">3rd Place</span>
+      </button>
+      <button class="step-btn" data-step="2" onclick="goTo(2)">
+        <span class="step-num">3</span>
+        <span class="step-label">Round of 32</span>
+      </button>
+      <button class="step-btn" data-step="3" onclick="goTo(3)">
+        <span class="step-num">4</span>
+        <span class="step-label">Round of 16</span>
+      </button>
+      <button class="step-btn" data-step="4" onclick="goTo(4)">
+        <span class="step-num">5</span>
+        <span class="step-label">Quarter-finals</span>
+      </button>
+      <button class="step-btn" data-step="5" onclick="goTo(5)">
+        <span class="step-num">6</span>
+        <span class="step-label">Semi-finals</span>
+      </button>
+      <button class="step-btn" data-step="6" onclick="goTo(6)">
+        <span class="step-num">7</span>
+        <span class="step-label">Final</span>
+      </button>
+      <button class="step-btn" data-step="7" onclick="goTo(7)">
+        <span class="step-num">🏆</span>
+        <span class="step-label">Champion</span>
+      </button>
+    </nav>
+
+    <img class="header-logo" src="wc2026-logo.png" alt="FIFA World Cup 2026">
+
+  </div>
+</header>
+
+<!-- ══════════════════════════════════════════════
+     FLAG TICKER
+══════════════════════════════════════════════ -->
+<div class="flags-ticker" aria-hidden="true">
+  <div class="ticker-track" id="ticker-track"></div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     MAIN
+══════════════════════════════════════════════ -->
+<main>
+
+  <!-- ═══ PAGE 0 - GROUP STAGE ═══ -->
+  <div id="page-0" class="page active theme-gs">
+
+    <div class="hero">
+      <img src="WC26_Branding_Poster.jpeg" alt="" class="hero-bg-img" aria-hidden="true">
+      <div class="hero-overlay"></div>
+      <div class="hero-content">
+        <div class="hero-pill">🏟️ June 11 – July 19, 2026 &nbsp;·&nbsp; 🇺🇸 USA · 🇨🇦 Canada · 🇲🇽 Mexico</div>
+        <h1>
+          <span class="hl-gradient">WORLD CUP 2026</span><br>
+          <span class="hl-sub">PREDICTOR</span>
+        </h1>
+        <p>
+          Drag teams within each group to rank them 1st–4th.
+          The <strong>top 2</strong> from every group qualify automatically.
+          Then pick your 3rd-place teams, call every knockout match, and crown your champion.
+        </p>
+        <div class="hero-meta">
+          <div class="hero-stat"><div class="num">48</div><div class="lbl">Teams</div></div>
+          <div class="hero-stat"><div class="num">12</div><div class="lbl">Groups</div></div>
+          <div class="hero-stat"><div class="num">104</div><div class="lbl">Matches</div></div>
+          <div class="hero-stat"><div class="num">16</div><div class="lbl">Host Cities</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="progress-wrap">
+      <span class="progress-label">Groups ranked</span>
+      <div class="progress-track"><div class="progress-fill" id="gs-progress" style="width:0%"></div></div>
+      <span class="progress-count" id="gs-count">0 / 12</span>
+    </div>
+
+    <div class="instr">
+      <strong>Drag teams</strong> up or down within each group to set your predicted final standings.
+      Positions 1 &amp; 2 automatically qualify for the Round of 32.
+    </div>
+
+    <div class="controls">
+      <button class="btn danger" onclick="resetGroups()">↺ Reset Groups</button>
+      <div class="controls-right">
+        <button class="btn primary" onclick="goTo(1)">Next: Pick 3rd Place →</button>
+      </div>
+    </div>
+
+    <div class="groups-grid" id="groups-grid"></div>
+
+  </div><!-- /page-0 -->
+
+
+  <!-- ═══ PAGE 1 - 3RD PLACE ═══ -->
+  <div id="page-1" class="page theme-3rd">
+
+    <div class="page-header">
+      <div class="page-header-left">
+        <div class="page-stage-pill">Step 2 · 3rd Place Selection</div>
+        <h1>Pick the <em>Best 8</em></h1>
+        <p>These 12 teams finished 3rd in their groups. Select exactly <strong>8</strong> to advance to the Round of 32, just like the real tournament's best third-placed rule.</p>
+      </div>
+      <img src="WC26_Football_Trionda_Icon.jpeg" alt="" class="page-header-img page-header-img--round">
+    </div>
+
+    <div class="third-count-bar">
+      <span class="third-tally">Selected: <em id="third-count">0</em> / 8</span>
+      <div class="progress-track" style="flex:1;max-width:220px">
+        <div class="progress-fill" id="third-progress" style="width:0%"></div>
+      </div>
+      <span class="third-hint">4 teams will be eliminated</span>
+    </div>
+
+    <div class="instr">
+      <strong>Click a team card</strong> to select or deselect them. Exactly 8 must be chosen before you can proceed.
+    </div>
+
+    <div class="controls">
+      <button class="btn ghost" onclick="goTo(0)">← Back to Groups</button>
+      <div class="controls-right">
+        <button class="btn primary" id="btn-proceed-3rd" onclick="goTo(2)" disabled>Next: Round of 32 →</button>
+      </div>
+    </div>
+
+    <div class="third-grid" id="third-grid"></div>
+
+  </div><!-- /page-1 -->
+
+
+  <!-- ═══ PAGE 2 - ROUND OF 32 ═══ -->
+  <div id="page-2" class="page theme-r32">
+
+    <div class="page-header">
+      <div class="page-header-left">
+        <div class="page-stage-pill">Step 3 · Round of 32</div>
+        <h1>Round <em>of 32</em></h1>
+        <p>16 matches. Click a team in each fixture to advance them. Group winners face 3rd-place teams; runners-up face other runners-up, following FIFA's official bracket.</p>
+      </div>
+      <img src="WC26_Trophy_Flags.jpeg" alt="" class="page-header-img">
+    </div>
+
+    <div class="instr"><strong>Click a team</strong> to select them as the match winner and advance them to the Round of 16.</div>
+
+    <div class="controls">
+      <button class="btn ghost" onclick="goTo(1)">← Back to 3rd Place</button>
+      <div class="controls-right">
+        <button class="btn primary" id="btn-proceed-r32" onclick="goTo(3)" disabled>Next: Round of 16 →</button>
+      </div>
+    </div>
+
+    <div class="ko-layout" id="ko-r32"></div>
+
+  </div><!-- /page-2 -->
+
+
+  <!-- ═══ PAGE 3 - ROUND OF 16 ═══ -->
+  <div id="page-3" class="page theme-r16">
+
+    <div class="page-header">
+      <div class="page-header-left">
+        <div class="page-stage-pill">Step 4 · Round of 16</div>
+        <h1>Round <em>of 16</em></h1>
+        <p>8 matches. Click a team in each fixture to advance them to the Quarter-finals.</p>
+      </div>
+      <img src="WC26_Football_Trionda_Icon.jpeg" alt="" class="page-header-img page-header-img--round">
+    </div>
+
+    <div class="instr"><strong>Click a team</strong> to select them as the match winner.</div>
+
+    <div class="controls">
+      <button class="btn ghost" onclick="goTo(2)">← Back to R32</button>
+      <div class="controls-right">
+        <button class="btn primary" id="btn-proceed-r16" onclick="goTo(4)" disabled>Next: Quarter-finals →</button>
+      </div>
+    </div>
+
+    <div class="ko-layout" id="ko-r16"></div>
+
+  </div><!-- /page-3 -->
+
+
+  <!-- ═══ PAGE 4 - QUARTER-FINALS ═══ -->
+  <div id="page-4" class="page theme-qf">
+
+    <div class="page-header">
+      <div class="page-header-left">
+        <div class="page-stage-pill">Step 5 · Quarter-finals</div>
+        <h1>Quarter <em>Finals</em></h1>
+        <p>4 matches. Click a team in each fixture to advance them to the Semi-finals.</p>
+      </div>
+      <img src="WC26_Trophy_Flags.jpeg" alt="" class="page-header-img">
+    </div>
+
+    <div class="instr"><strong>Click a team</strong> to select them as the match winner.</div>
+
+    <div class="controls">
+      <button class="btn ghost" onclick="goTo(3)">← Back to R16</button>
+      <div class="controls-right">
+        <button class="btn primary" id="btn-proceed-qf" onclick="goTo(5)" disabled>Next: Semi-finals →</button>
+      </div>
+    </div>
+
+    <div class="ko-layout" id="ko-qf"></div>
+
+  </div><!-- /page-4 -->
+
+
+  <!-- ═══ PAGE 5 - SEMI-FINALS ═══ -->
+  <div id="page-5" class="page theme-sf">
+
+    <div class="page-header">
+      <div class="page-header-left">
+        <div class="page-stage-pill">Step 6 · Semi-finals</div>
+        <h1>Semi <em>Finals</em></h1>
+        <p>2 matches. Click a team to advance them to the Final.</p>
+      </div>
+      <img src="WC26_Football_Trionda_Icon.jpeg" alt="" class="page-header-img page-header-img--round">
+    </div>
+
+    <div class="instr"><strong>Click a team</strong> to select them as the match winner.</div>
+
+    <div class="controls">
+      <button class="btn ghost" onclick="goTo(4)">← Back to QF</button>
+      <div class="controls-right">
+        <button class="btn primary" id="btn-proceed-sf" onclick="goTo(6)" disabled>Next: The Final →</button>
+      </div>
+    </div>
+
+    <div class="ko-layout" id="ko-sf"></div>
+
+  </div><!-- /page-5 -->
+
+
+  <!-- ═══ PAGE 6 - FINAL ═══ -->
+  <div id="page-6" class="page theme-final">
+
+    <div class="page-header">
+      <div class="page-header-left">
+        <div class="page-stage-pill">Step 7 · The Final</div>
+        <h1>The <em>Final</em></h1>
+        <p>One match. One champion. MetLife Stadium, New Jersey | July 19, 2026.</p>
+      </div>
+      <img src="WC26_Trophy_Flags.jpeg" alt="" class="page-header-img">
+    </div>
+
+    <div class="instr"><strong>Click a team</strong> to crown your World Cup 2026 champion.</div>
+
+    <div class="controls">
+      <button class="btn ghost" onclick="goTo(5)">← Back to Semis</button>
+      <div class="controls-right">
+        <button class="btn primary" id="btn-proceed-final" onclick="goTo(7)" disabled>See Your Champion 🏆</button>
+      </div>
+    </div>
+
+    <div class="ko-layout" id="ko-final"></div>
+
+  </div><!-- /page-6 -->
+
+
+  <!-- ═══ PAGE 7 - CHAMPION ═══ -->
+  <div id="page-7" class="page theme-final">
+
+    <div class="page-header">
+      <div class="page-header-left">
+        <div class="page-stage-pill">🏆 Your Prediction</div>
+        <h1>Your <em>Champion</em></h1>
+      </div>
+    </div>
+
+    <div class="champ-outer">
+      <div id="champ-wrap"></div>
+    </div>
+
+  </div><!-- /page-7 -->
+
+</main>
+
+<!-- Toast notification -->
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script src="app.js"></script>
+</body>
+</html>
